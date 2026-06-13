@@ -1,0 +1,27 @@
+# src/test/resources/application-test.yml
+# Perfil de teste: H2 isolado por execucao, Flyway aplicando o mesmo schema de producao.
+spring:
+  datasource:
+    url: jdbc:h2:mem:bank_test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+app:
+  security:
+    jwt:
+      secret: test-secret-key-must-be-at-least-32-bytes-long-for-hs256-signing
+      issuer: digital-bank-test
+      expiration-minutes: 60
+
+logging:
+  level:
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN

@@ -1,0 +1,39 @@
+# docker-compose.yml
+# Digital Bank API + PostgreSQL.
+# Segredos vem de um arquivo .env (git-ignored). Antes de subir:  cp .env.example .env
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bank}
+      POSTGRES_USER: ${POSTGRES_USER:-bank}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bank}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bank} -d ${POSTGRES_DB:-bank}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-bank}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-bank}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-bank}
+      # Obrigatorio: defina JWT_SECRET no .env (>= 32 caracteres). Sem ele o compose falha de proposito.
+      JWT_SECRET: ${JWT_SECRET:?defina JWT_SECRET no arquivo .env (>= 32 caracteres) — veja .env.example}
+
+volumes:
+  db-data:

@@ -1,0 +1,27 @@
+# src/main/resources/application-postgres.yml
+# Perfil PostgreSQL (producao / docker-compose).
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/bank}
+    username: ${SPRING_DATASOURCE_USERNAME:bank}
+    password: ${SPRING_DATASOURCE_PASSWORD:bank}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  h2:
+    console:
+      enabled: false
+
+# Documentacao da API desativada em producao (reduz superficie de ataque)
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false

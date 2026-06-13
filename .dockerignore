@@ -1,0 +1,31 @@
+# .dockerignore
+# Build artifacts
+target/
+
+# VCS
+.git/
+.gitignore
+.gitattributes
+
+# CI / GitHub
+.github/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Docs (not needed inside the image)
+README.md
+README*.md
+docs/
+*.adoc
+
+# Docker meta (avoid recursive context)
+Dockerfile
+.dockerignore
+docker-compose.yml
+docker-compose*.yml
+
+# OS noise
+.DS_Store
