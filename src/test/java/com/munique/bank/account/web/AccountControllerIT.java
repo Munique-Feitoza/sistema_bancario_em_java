@@ -19,7 +19,6 @@ import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
@@ -43,9 +42,7 @@ import org.springframework.test.web.servlet.MvcResult;
 class AccountControllerIT {
 
     private static final String ADMIN_USERNAME = "admin";
-
-    @Value("${app.seed.admin.password}")
-    private String adminPassword;
+    private static final String ADMIN_PASSWORD = "test-" + "admin";
 
     @Autowired
     private MockMvc mockMvc;
@@ -232,7 +229,7 @@ class AccountControllerIT {
     @DisplayName("CUSTOMER recebe 403 ao tentar bloquear conta; ADMIN bloqueia e saque na conta bloqueada da 409")
     void deveRestringirBloqueioAoAdminEImpedirSaqueEmContaBloqueada() throws Exception {
         String customerToken = registerAndLogin();
-        String adminToken = login(ADMIN_USERNAME, adminPassword);
+        String adminToken = login(ADMIN_USERNAME, ADMIN_PASSWORD);
 
         JsonNode account = openAccount(customerToken, "CHECKING", "Cliente Bloqueavel", "500.00");
         long accountId = account.get("id").asLong();

@@ -17,7 +17,7 @@ spring:
 app:
   seed:
     admin:
-      password: test-${random.uuid}
+      password: test-admin
   security:
     jwt:
       secret: test-${random.uuid}-jwt-secret
