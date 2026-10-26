@@ -14,7 +14,7 @@ public record RegisterRequest(
 
         @NotBlank
         @Size(min = 8, max = 72, message = "password must be 8-72 characters")
-        @Schema(example = "S3nh@Forte!2026")
+        @Schema(example = "senha-definida-localmente")
         String password,
 
         @NotBlank

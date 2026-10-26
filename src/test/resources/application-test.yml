@@ -15,9 +15,12 @@ spring:
     locations: classpath:db/migration
 
 app:
+  seed:
+    admin:
+      password: test-${random.uuid}
   security:
     jwt:
-      secret: test-secret-key-must-be-at-least-32-bytes-long-for-hs256-signing
+      secret: test-${random.uuid}-jwt-secret
       issuer: digital-bank-test
       expiration-minutes: 60
 

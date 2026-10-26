@@ -34,7 +34,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 class AuthServiceTest {
 
     private static final String USERNAME = "alice";
-    private static final String RAW_PASSWORD = "S3nh@Forte!";
+    private static final String RAW_PASSWORD = "test-" + java.util.UUID.randomUUID();
     private static final String FULL_NAME = "Alice Liddell";
     private static final String PASSWORD_HASH = "$2a$10$hashFakeParaTeste";
 

@@ -259,7 +259,7 @@ SPRING_PROFILES_ACTIVE=postgres \
 SPRING_DATASOURCE_URL=jdbc:postgresql://localhost:5432/bank \
 SPRING_DATASOURCE_USERNAME=bank \
 SPRING_DATASOURCE_PASSWORD=bank \
-JWT_SECRET=uma-chave-secreta-com-pelo-menos-32-caracteres \
+  JWT_SECRET="$JWT_SECRET" \
 mvn spring-boot:run
 ```
 O Flyway aplica as migrations (`db/migration`) e o Hibernate apenas **valida** o schema (`ddl-auto: validate`). No perfil `postgres` o console H2, o Swagger e o seeder de admin ficam desativados.
@@ -283,7 +283,7 @@ Fora do perfil `postgres`, o `DevDataSeeder` cria um administrador para facilita
 
 ```
 usuario: admin
-senha:   admin12345
+senha:   definida por `app.seed.admin.password` apenas no ambiente local
 ```
 > Credenciais default sao semeadas **somente** no perfil de desenvolvimento (H2) — nunca em producao.
 
@@ -318,16 +318,17 @@ Fluxo validado fim a fim. As rotas de movimentacao usam o **id** da conta no pat
 
 ### 8.1. Registro
 ```bash
+TEST_PASSWORD="defina-uma-senha-local";
 curl -X POST http://localhost:8080/api/auth/register \
   -H "Content-Type: application/json" \
-  -d '{"username":"mario.andrade","password":"S3nh@Forte!2026","fullName":"Mario Andrade"}'
+  -d '{"username":"mario.andrade","password":"'"$TEST_PASSWORD"'","fullName":"Mario Andrade"}'
 ```
 
 ### 8.2. Login (captura o token)
 ```bash
 TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"username":"mario.andrade","password":"S3nh@Forte!2026"}' \
+  -d '{"username":"mario.andrade","password":"'"$TEST_PASSWORD"'"}' \
   | sed -n 's/.*"accessToken":"\([^"]*\)".*/\1/p')
 ```
 Todas as chamadas seguintes usam `-H "Authorization: Bearer $TOKEN"`.

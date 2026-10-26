@@ -33,7 +33,7 @@ public class DevDataSeeder implements ApplicationRunner {
     public DevDataSeeder(UserRepository userRepository,
                          PasswordEncoder passwordEncoder,
                          @Value("${app.seed.admin.username:admin}") String adminUsername,
-                         @Value("${app.seed.admin.password:admin12345}") String adminPassword) {
+                         @Value("${app.seed.admin.password:}") String adminPassword) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.adminUsername = adminUsername;
@@ -43,6 +43,10 @@ public class DevDataSeeder implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
+        if (adminPassword == null || adminPassword.isBlank()) {
+            log.info("Admin seed skipped: configure app.seed.admin.password explicitly for local development.");
+            return;
+        }
         if (userRepository.existsByUsername(adminUsername)) {
             return;
         }

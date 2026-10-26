@@ -11,7 +11,7 @@ public record LoginRequest(
         String username,
 
         @NotBlank
-        @Schema(example = "S3nh@Forte!2026")
+        @Schema(example = "senha-definida-localmente")
         String password
 ) {
 }

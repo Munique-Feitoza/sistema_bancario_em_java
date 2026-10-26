@@ -32,7 +32,7 @@ class AuthControllerIT {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static final String VALID_PASSWORD = "S3nh@Forte!2026";
+    private static final String VALID_PASSWORD = "test-" + UUID.randomUUID();
 
     /** Username unico por chamada para nao colidir com o estado compartilhado do H2. */
     private static String uniqueUsername() {

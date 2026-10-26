@@ -154,7 +154,7 @@ class ConcurrentWithdrawalIT {
 
     private AuthenticatedUser registerOwner() {
         String username = "conc-" + UUID.randomUUID();
-        User user = authService.register(username, "S3nh@Forte!", "Concurrency Owner");
+        User user = authService.register(username, "test-" + UUID.randomUUID(), "Concurrency Owner");
         return new AuthenticatedUser(user.getId(), user.getUsername(), Role.CUSTOMER);
     }
 }
